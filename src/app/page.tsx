@@ -1,113 +1,390 @@
-import Image from 'next/image'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card'
+
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table'
+
+import { Progress } from '@/components/ui/progress'
+import { cn } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
+import LineChart from '@/components/LineChart'
+import { Suspense } from 'react'
+import { Input } from '@/components/ui/input'
+import { Search } from 'lucide-react'
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+	const weekDays = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI']
+	const chartValues = ['50k', '40k', '30k', '20k', '10k', '0k']
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+	const tableData = [
+		{
+			METHOD: 'PayPal',
+			CREATED: '#nZ8wy',
+			TOTAL: '$678.5',
+			STATUS: 'Pending',
+		},
+		{
+			METHOD: 'Card',
+			CREATED: '#ZrANL',
+			TOTAL: '$165.58',
+			STATUS: 'Shipped',
+		},
+		{
+			METHOD: 'Skrill',
+			CREATED: '#XIA1e',
+			TOTAL: '$463.25',
+			STATUS: 'Confirmed',
+		},
+		{
+			METHOD: 'Visa Card',
+			CREATED: '#CVaZE',
+			TOTAL: '$363.25',
+			STATUS: 'Rejected',
+		},
+	] as const
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+	const topSellers = [
+		{
+			AMOUNT: '$350K',
+			NAME: 'Gage Paquette',
+			COUNT: '13,440',
+			IMAGE_URL: 'https://github.com/shadcn.png',
+		},
+		{
+			AMOUNT: '$148K',
+			NAME: 'Lara Harvey',
+			COUNT: '10,240',
+			IMAGE_URL: 'https://github.com/shadcn.png',
+		},
+		{
+			AMOUNT: '$148K',
+			NAME: 'Evan Scott',
+			COUNT: '10,240',
+			IMAGE_URL: 'https://github.com/shadcn.png',
+		},
+		{
+			AMOUNT: '$148K',
+			NAME: 'Benja Johnston',
+			COUNT: '10,240',
+			IMAGE_URL: 'https://github.com/shadcn.png',
+		},
+	] as const
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+	const productsData = [
+		{
+			PRODUCT_NAME: 'Apple Watch',
+			PRICE: '$1,799',
+			SOLD: '2,389 pcs',
+			SALES: '$17,689',
+		},
+		{
+			PRODUCT_NAME: 'Nike Shoes',
+			PRICE: '$739',
+			SOLD: '6,698 pcs',
+			SALES: '$62,397',
+		},
+		{
+			PRODUCT_NAME: 'Ribbon Glass',
+			PRICE: '$245',
+			SOLD: '300 pcs',
+			SALES: '$7,658',
+		},
+		{
+			PRODUCT_NAME: 'Apple Watch',
+			PRICE: '$139',
+			SOLD: '2,389 pcs',
+			SALES: '$6,658',
+		},
+	] as const
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
+	return (
+		<div className="mb-4 grid grid-cols-1 gap-3 lg:grid-cols-12">
+			<Card className="grid lg:lg:col-span-3">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-xl lg:text-2xl">
+						1,352{' '}
+						<span className="rounded-full bg-slate-200 p-1 font-light text-slate-400 dark:bg-zinc-600 dark:text-violet-400">
+							+12.5%
+						</span>
+					</CardTitle>
+					<CardDescription>Daily visitors</CardDescription>
+				</CardHeader>
+				<CardFooter className="mt-auto grid grid-cols-4">
+					<Avatar>
+						<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+						<AvatarFallback>CN</AvatarFallback>
+					</Avatar>
+					<Avatar>
+						<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+						<AvatarFallback>CN</AvatarFallback>
+					</Avatar>
+					<Avatar>
+						<AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+						<AvatarFallback>CN</AvatarFallback>
+					</Avatar>
+					<Avatar>
+						<AvatarImage src="" alt="@shadcn" />
+						<AvatarFallback>+ 2</AvatarFallback>
+					</Avatar>
+				</CardFooter>
+			</Card>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+			<Card className="grid lg:col-span-3">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-xl lg:text-2xl">
+						$51,352{' '}
+						<span className="rounded-full bg-green-100 p-1 font-light text-green-500 dark:bg-zinc-600 ">
+							+12.5%
+						</span>
+					</CardTitle>
+					<CardDescription>Average Daily Sales</CardDescription>
+				</CardHeader>
+				<CardFooter className=" mt-auto grid grid-cols-7 grid-rows-4 gap-2">
+					{Array.from({ length: 7 }).map((_, i) => (
+						<div
+							key={i}
+							className={cn(
+								'row-span-3 h-full rounded-t-full bg-slate-300  even:row-span-4 even:bg-violet-500',
+							)}
+						/>
+					))}
+				</CardFooter>
+			</Card>
+
+			<Card className="grid lg:col-span-3">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-xl lg:text-2xl">
+						1,352{' '}
+						<span className="rounded-full bg-red-100 p-1 font-light text-red-300 dark:bg-zinc-600">
+							-2.5%
+						</span>
+					</CardTitle>
+					<CardDescription>Order This Month</CardDescription>
+				</CardHeader>
+				<CardFooter className="mt-auto grid gap-2">
+					<div className="flex justify-between">
+						<span className="text-card-foreground">1,500 to Goal</span>
+						<span className="text-muted-foreground">80%</span>
+					</div>
+					<Progress value={80} barColor="bg-teal-500" />
+				</CardFooter>
+			</Card>
+
+			<Card className="grid lg:col-span-3">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-xl lg:text-2xl">
+						$20,360{' '}
+						<span className="rounded-full bg-red-100 p-1 font-light text-red-300 dark:bg-zinc-600">
+							-2.5%
+						</span>
+					</CardTitle>
+					<CardDescription>Monthly Earnings</CardDescription>
+				</CardHeader>
+				<CardContent></CardContent>
+				<CardFooter className="mt-auto grid gap-2">
+					<div className="flex justify-between">
+						<span className="text-xs text-card-foreground">1,500 to Goal</span>
+						<span className="text-xs text-muted-foreground">80%</span>
+					</div>
+					<Progress value={80} barColor="bg-violet-500" />
+				</CardFooter>
+			</Card>
+
+			<Card className="lg:col-span-8">
+				<CardHeader>
+					<CardTitle>Sales</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div className="relative mb-2 ml-4 h-36 pl-4">
+						<ul className="relative h-full">
+							{chartValues.map((value, i) => (
+								<li
+									key={i}
+									className={cn('relative', 'border-t border-dashed')}
+									style={{ height: `${100 / (chartValues.length - 1)}%` }}
+								>
+									<span className="absolute -left-7 -top-3 text-sm text-muted-foreground">
+										{value}
+									</span>
+								</li>
+							))}
+						</ul>
+
+						<div className="ml-6 flex w-[90%] justify-between">
+							{weekDays.map((day, i) => (
+								<div
+									key={i}
+									className="group flex justify-center text-sm text-muted-foreground"
+								>
+									<div
+										className={cn(
+											'absolute bottom-0 w-4 rounded-t-full bg-slate-500 group-even:bg-violet-500',
+										)}
+										style={{ height: `${i + 1}0%` }}
+									/>
+									<span>{day}</span>
+								</div>
+							))}
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+
+			<Card className="lg:col-span-4">
+				<CardHeader>
+					<CardTitle>Pie Chart</CardTitle>
+					<CardDescription>Card Description</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<p>Card Content</p>
+				</CardContent>
+				<CardFooter>
+					<p>Card Footer</p>
+				</CardFooter>
+			</Card>
+
+			<Card className="lg:col-span-8">
+				<CardHeader>
+					<CardTitle>Recent Orders</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="w-[100px]">METHOD</TableHead>
+								<TableHead>CREATED</TableHead>
+								<TableHead>TOTAL</TableHead>
+								<TableHead className="text-right">STATUS</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{tableData.map((row, i) => (
+								<TableRow key={i}>
+									<TableCell className="font-medium">{row.METHOD}</TableCell>
+									<TableCell>{row.CREATED}</TableCell>
+									<TableCell>{row.TOTAL}</TableCell>
+									<TableCell className="text-right">
+										<Badge
+											className={cn('bg-primary/10 dark:bg-primary/20', {
+												'bg-amber-100 text-amber-600': row.STATUS === 'Pending',
+												'bg-teal-100 text-teal-600': row.STATUS === 'Shipped',
+												'bg-violet-100 text-violet-600':
+													row.STATUS === 'Confirmed',
+												'bg-red-100 text-red-700': row.STATUS === 'Rejected',
+											})}
+										>
+											{row.STATUS}
+										</Badge>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</CardContent>
+			</Card>
+
+			<Card className="lg:col-span-4">
+				<CardHeader>
+					<CardTitle>Top Seller</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
+						<span>Profile</span>
+						<span>Items Solid</span>
+					</div>
+					<div className="grid gap-2">
+						{topSellers.map((topSeller, i) => (
+							<div key={i} className="flex items-center justify-between">
+								<div className="flex items-center gap-2">
+									<Avatar>
+										<AvatarImage src={topSeller.IMAGE_URL} alt="@shadcn" />
+										<AvatarFallback>CN</AvatarFallback>
+									</Avatar>
+									<div className="flex flex-col">
+										<span className="text-muted-foreground">
+											{topSeller.AMOUNT}
+										</span>
+										<strong className="text-foreground">
+											{topSeller.NAME}
+										</strong>
+									</div>
+								</div>
+								<span className="text-muted-foreground">{topSeller.COUNT}</span>
+							</div>
+						))}
+					</div>
+				</CardContent>
+			</Card>
+
+			<Card className="lg:col-span-4">
+				<CardHeader>
+					<CardTitle>50.56%</CardTitle>
+					<CardDescription>Returning Rate</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Suspense fallback="Loading...">
+						{typeof window !== undefined && <LineChart />}
+					</Suspense>
+				</CardContent>
+			</Card>
+
+			<Card className="lg:col-span-8">
+				<CardHeader className="flex-row items-center justify-between">
+					<CardTitle>Top Products</CardTitle>
+					<Input placeholder="Search Products..." icon={<Search />} />
+				</CardHeader>
+				<CardContent>
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead className="w-[100px]">PRODUCT NAME</TableHead>
+								<TableHead className="text-right">PRICE</TableHead>
+								<TableHead className="text-right">SOLD</TableHead>
+								<TableHead className="text-right">SALES</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{productsData.map((row, i) => (
+								<TableRow key={i}>
+									<TableCell className="font-medium">
+										{row.PRODUCT_NAME}
+									</TableCell>
+									<TableCell className="text-right">{row.PRICE}</TableCell>
+									<TableCell className="text-right">{row.SOLD}</TableCell>
+									<TableCell className="text-right">{row.SALES}</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</CardContent>
+			</Card>
+
+			<Card className="lg:col-span-12">
+				<CardHeader>
+					<CardTitle>Card Title</CardTitle>
+					<CardDescription>Card Description</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<p>Card Content</p>
+				</CardContent>
+				<CardFooter>
+					<p>Card Footer</p>
+				</CardFooter>
+			</Card>
+		</div>
+	)
 }
