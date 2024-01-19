@@ -3,8 +3,9 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ToggleMode } from '@/components/toggle-mode'
-import SideBar from '@/components/SideBar'
 import Header from '@/components/Header'
+import { SideBarProvider } from '@/contexts/SideBarContext'
+import SideBar from '@/components/SideBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,13 +26,15 @@ export default function RootLayout({
 					<div className="fixed bottom-4 right-4">
 						<ToggleMode />
 					</div>
-					<SideBar />
-					<main className="grid w-full grid-cols-1 lg:grid-cols-12">
-						<div className="col-start-2  col-end-12 px-4 ">
-							<Header />
-							{children}
-						</div>
-					</main>
+					<SideBarProvider>
+						<>
+							<SideBar />
+							<main className="mx-auto max-w-7xl">
+								<Header />
+								{children}
+							</main>
+						</>
+					</SideBarProvider>
 				</ThemeProvider>
 			</body>
 		</html>
